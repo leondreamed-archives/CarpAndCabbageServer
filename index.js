@@ -54,7 +54,6 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('movePlayer', (payloadJSON) => {
-		console.log(`${socket.id} sends out update move player: ${payloadJSON}`)
 		const payload = JSON.parse(payloadJSON);
 		socket.broadcast.to(socketRoomId).emit('movePlayer',  JSON.stringify({
 			x: payload.x,
@@ -76,12 +75,16 @@ io.on('connection', (socket) => {
 	socket.on('breakPlatform', (payloadJSON) => {
 		console.log(`${socket.id} breaks platform with ${payloadJSON}`);
 		const payload = JSON.parse(payloadJSON);
-		socket.broadcast.to(socketRoomId).emit('', JSON.stringify({
+		socket.broadcast.to(socketRoomId).emit('breakPlatform', JSON.stringify({
 			x: payload.x,
 			y: payload.y,
 			activatedById: socket.id,
 		}))
 	})
+
+	socket.on('playerDied', () => {
+		socket.broadcast.to(socketRoomId).emit('playerDied', socket.id);
+	});
 
 	// Cleaning up when a socket disconencts
 	socket.on('disconnect', () => {
