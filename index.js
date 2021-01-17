@@ -68,12 +68,13 @@ io.on('connection', (socket) => {
 		const payload = JSON.parse(payloadJSON);
 		socket.broadcast.to(socketRoomId).emit('chiliAttack', JSON.stringify({
 			x: payload.x,
+			y: payload.y,
 			activatedById: socket.id
 		}))
 	})
 
 	socket.on('breakPlatform', (payloadJSON) => {
-		console.log(`${socket.id} breaks platform`);
+		console.log(`${socket.id} breaks platform with ${payloadJSON}`);
 		const payload = JSON.parse(payloadJSON);
 		socket.broadcast.to(socketRoomId).emit('', JSON.stringify({
 			x: payload.x,
